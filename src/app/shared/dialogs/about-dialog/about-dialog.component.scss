@@ -1,0 +1,21 @@
+@import 'src/styles/color-constants.scss';
+
+.about-title {
+  color: $geneicd-blue;
+}
+
+.about-dialog-content {
+  width: 50ch;
+
+  p {
+    margin-bottom: 0px;
+  }
+}
+
+.copyright-text {
+  vertical-align: 7px;
+}
+
+.copyright-paragraph {
+  margin-top: 12px;
+}

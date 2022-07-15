@@ -1,0 +1,26 @@
+@import 'color-constants.scss';
+
+.page-heading {
+  text-align: left;
+  color: $geneicd-blue;
+  margin-bottom: 15px;
+}
+
+.page-container {
+  padding: 25px 5% 0 5%;
+  max-width: 1080px;
+  margin: auto;
+}
+
+.page-content-fieldset {
+  border-color: $geneicd-blue;
+  border-style: solid;
+  border-radius: 5px;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+}
+
+.page-content-hint {
+  color: $geneicd-blue-light;
+  margin-bottom: 5px;
+}

@@ -1,0 +1,127 @@
+image: circleci/node:16.13.1-browsers
+
+options:
+  max-time: 10
+
+definitions:
+  caches:
+    npm: $HOME/.npm
+  steps:
+    - step: &install-modules
+        name: Install modules
+        caches:
+          - npm
+          - node
+        script:
+          - printf "//registry.npmjs.org/:_authToken=${NPM_READ_ONLY_TOKEN}" >> ~/.npmrc
+          - npm ci
+    - step: &lint-and-format
+        name: Lint and format
+        caches:
+          - npm
+          - node
+        script:
+          - npm run lint # prettier is built into the linter
+    - step: &build-scully
+        name: Build with Scully
+        caches:
+          - npm
+          - node
+        script:
+          - npx ng build --configuration production
+          - npx scully
+        artifacts:
+          - dist/**
+    - step: &security-scan
+        name: Security scan
+        caches:
+          - npm
+          - node
+        script:
+          - npm run security
+    - step: &unit-tests
+        name: Unit tests
+        caches:
+          - npm
+          - node
+        script:
+          - npm run test:ci:coverage
+    - step: &clear-repository-cache
+        name: Clear repository cache
+        script:
+          - pipe: atlassian/bitbucket-clear-cache:3.1.1
+            variables:
+              BITBUCKET_USERNAME: $BITBUCKET_USERNAME
+              BITBUCKET_APP_PASSWORD: $BITBUCKET_APP_PASSWORD
+    - step: &upload-dev
+        name: Upload to S3 origin (dev env)
+        oidc: true
+        script:
+          - pipe: atlassian/aws-s3-deploy:1.1.0
+            variables:
+              AWS_DEFAULT_REGION: 'us-east-2'
+              AWS_OIDC_ROLE_ARN: 'arn:aws:iam::172538567063:role/lab-onboarding-bitbucket-pipelines-cicd'
+              S3_BUCKET: 'geneicd-lab-onboarding-website-origin-dev'
+              LOCAL_PATH: 'dist/static'
+              DEBUG: 'true' # Optional.
+    - step: &upload-prod
+        name: Upload to S3 origin (prod env)
+        oidc: true
+        script:
+          - pipe: atlassian/aws-s3-deploy:1.1.0
+            variables:
+              AWS_DEFAULT_REGION: 'us-east-2'
+              AWS_OIDC_ROLE_ARN: 'arn:aws:iam::172538567063:role/lab-onboarding-bitbucket-pipelines-cicd'
+              S3_BUCKET: 'geneicd-lab-onboarding-website-origin'
+              LOCAL_PATH: 'dist/static'
+              DEBUG: 'true' # Optional.
+    - step:
+        &invalidate-cloudfront-cache-dev # To ensure Cloudfront picks up the new version right away
+        name: Invalidate Cloudfront cache (dev env)
+        oidc: true
+        script:
+          - pipe: atlassian/aws-cloudfront-invalidate:0.6.0
+            variables:
+              AWS_DEFAULT_REGION: 'us-east-2'
+              AWS_OIDC_ROLE_ARN: 'arn:aws:iam::172538567063:role/lab-onboarding-bitbucket-pipelines-cicd'
+              DISTRIBUTION_ID: 'E3P8B217U0CLD1'
+              DEBUG: 'true' # Optional
+    - step:
+        &invalidate-cloudfront-cache-prod # To ensure Cloudfront picks up the new version right away
+        name: Invalidate Cloudfront cache (prod env)
+        oidc: true
+        script:
+          - pipe: atlassian/aws-cloudfront-invalidate:0.6.0
+            variables:
+              AWS_DEFAULT_REGION: 'us-east-2'
+              AWS_OIDC_ROLE_ARN: 'arn:aws:iam::172538567063:role/lab-onboarding-bitbucket-pipelines-cicd'
+              DISTRIBUTION_ID: 'E18Y7G8OB5981U'
+              DEBUG: 'true' # Optional
+
+pipelines:
+  pull-requests:
+    '**': #this runs as default for any branch not elsewhere defined
+      - step: *clear-repository-cache
+      - step: *install-modules
+      - parallel:
+          - step: *lint-and-format
+          - step: *security-scan
+          - step: *unit-tests
+  branches: # branch specific pipeline
+    main: # Dev branch
+      - step: *install-modules
+      - parallel:
+          - step: *lint-and-format
+          - step: *security-scan
+          - step: *unit-tests
+      - step: *build-scully
+      - step: *upload-dev
+      - step: *invalidate-cloudfront-cache-dev
+    release/publish: # Publish to S3 Bucket (prod origin)
+      - step: *install-modules
+      - parallel:
+          - step: *security-scan
+          - step: *unit-tests
+      - step: *build-scully
+      #- step: *upload-prod
+      #- step: *invalidate-cloudfront-cache-prod

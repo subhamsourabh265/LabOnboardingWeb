@@ -1,0 +1,56 @@
+<mat-card>
+  <mat-card-content>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm, $event)">
+      <h2>Sign In</h2>
+      <mat-error *ngIf="!loginValid">
+        The username and password were not recognized
+      </mat-error>
+      <p *ngIf="passwordChanged" class="password-changed-message">
+        Password successfully changed. Log in with your new password.
+      </p>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input
+          matInput
+          type="email"
+          placeholder="example@example.com"
+          [(ngModel)]="username"
+          [ngModelOptions]="{ standalone: true }"
+          autocomplete="username"
+          required
+        />
+        <mat-error> Please provide a valid email address </mat-error>
+      </mat-form-field>
+      <mat-form-field class="password-field">
+        <mat-label>Password</mat-label>
+        <input
+          matInput
+          type="password"
+          placeholder="Password"
+          [(ngModel)]="password"
+          [ngModelOptions]="{ standalone: true }"
+          autocomplete="current-password"
+          required
+        />
+        <mat-error> Please provide a valid password </mat-error>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        id="loginButton"
+        class="login-button"
+        color="primary"
+        [disabled]="buttonDisabled"
+      >
+        Login
+      </button>
+      <button mat-button color="warn" id="forgotPasswordButton">
+        Forgot Password
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>
+
+<app-lab-onb-spinner
+  *ngIf="showSpinner"
+  text="Signing in"
+></app-lab-onb-spinner>

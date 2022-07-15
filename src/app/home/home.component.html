@@ -1,0 +1,35 @@
+<main class="page-container">
+  <div class="home-dashboard-container">
+    <fieldset class="page-content-fieldset">
+      <div class="lab-name-container-row">
+        <div class="lab-name-container-logo-column">
+          <img [src]="logo() | async" [alt]="logoAlternateText() | async" />
+        </div>
+        <div class="lab-name-container-column">
+          <mat-form-field appearance="fill">
+            <mat-select [(value)]="selected">
+              <mat-option value="option1">Onboard new lab</mat-option>
+              <mat-option value="option2">Redwood Lab Services</mat-option>
+              <mat-option value="option3">TestLab</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <span> {{ userDisplayName() | async }}</span>
+        </div>
+        <div class="lab-name-container-button-column">
+          <button
+            mat-icon-button
+            color="warn"
+            matTooltip="Sign out"
+            (click)="logoutRequested()"
+          >
+            <mat-icon>power_settings_new</mat-icon>
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </div>
+  <app-lab-onb-spinner
+    text="Retrieving lab information"
+    *ngIf="showSpinner"
+  ></app-lab-onb-spinner>
+</main>

@@ -1,0 +1,30 @@
+@import 'src/styles/color-constants.scss';
+
+mat-card {
+  max-width: 400px;
+  margin: 2em auto;
+  text-align: center;
+}
+
+mat-form-field {
+  display: block;
+}
+
+button {
+  margin-left: 3px;
+  margin-right: 3px;
+}
+
+.login-button {
+  margin-left: 34px;
+}
+
+.password-changed-message {
+  margin-top: 10px;
+  text-align: left;
+  color: $geneicd-blue;
+}
+
+.password-field {
+  margin-bottom: 4px;
+}

@@ -1,0 +1,73 @@
+@import 'src/styles/page-styles.scss';
+
+.page-container {
+  display: flex;
+  place-content: center;
+  height: 100%;
+}
+
+.home-dashboard-container {
+  max-width: 50%;
+  margin: 0 auto;
+}
+
+.page-content-fieldset {
+  margin-bottom: 15px;
+}
+
+.home-content-fieldset {
+  border-color: $geneicd-blue;
+  border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.lab-name-container-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.lab-name-container-logo-column {
+  display: flex;
+  flex-direction: column;
+  width: 60px;
+  flex: 0 0 60px;
+}
+
+.lab-name-container-column {
+  display: flex;
+  flex-direction: column;
+  flex-basis: 100%;
+  flex: 1;
+}
+
+.lab-name-container-button-column {
+  display: flex;
+  flex-direction: column;
+  width: 40px;
+  flex: 0 0 40px;
+}
+
+.lab-name-container-button-column mat-icon {
+  font-size: 35px;
+  padding-top: 12px;
+}
+
+.lab-name-container-logo-column img {
+  padding-top: 2px;
+  width: 50px;
+  height: 50px;
+}
+
+.lab-name-container-column p {
+  margin-bottom: -5px;
+}
+
+.lab-name {
+  color: $geneicd-blue;
+}
+
+.lab-admin-account {
+  color: $geneicd-green-dark;
+}

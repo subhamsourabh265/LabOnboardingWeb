@@ -1,0 +1,36 @@
+@import 'src/styles/color-constants.scss';
+
+.expanded-toolbar {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.toolbar-spacer {
+  flex: 1 1 auto;
+}
+
+button:hover {
+  background-color: $geneicd-blue-medium;
+}
+
+.signout-btn {
+  width: auto;
+  color: #fff;
+  mat-icon {
+    color: #fff;
+  }
+}
+
+// .mat-menu-item {
+//   background: transparent;
+//   color: #fff;
+// }
+
+// button.mat-menu-item {
+//   width: auto;
+// }
+
+// .mat-menu-item .mat-icon-no-color,
+// .mat-menu-submenu-icon {
+//   color: #fff;
+// }

@@ -1,0 +1,20 @@
+<h1 mat-dialog-title [style]="titleStyle" id="confirm-dialog-title">
+  {{ data.title }}
+</h1>
+<div mat-dialog-content mat-body-1 class="confirm-dialog-content">
+  <p class="confirm-dialog-message">
+    {{ data.message }}
+  </p>
+</div>
+<div mat-dialog-actions>
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    id="confirm-dialog-confirm-button"
+  >
+    {{ data.confirmButtonText }}
+  </button>
+  <button id="confirm-dialog-cancel-button" mat-button mat-dialog-close>
+    {{ data.cancelButtonText }}
+  </button>
+</div>

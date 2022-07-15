@@ -1,0 +1,16 @@
+<h1 mat-dialog-title class="about-title">About GENEICD lab onboarding</h1>
+<div mat-dialog-content mat-body-1 class="about-dialog-content">
+  <p>Version: {{ version() }}</p>
+  <p>Build mode: {{ modeString() }}</p>
+  <p>Sandbox mode: {{ sandboxString() }}</p>
+  <p>Deployment code: C95</p>
+  <p class="copyright-paragraph">
+    <mat-icon>copyright</mat-icon>
+    <span class="copyright-text"
+      >GENEICD 2022-{{ 'currentYear' | currentYear }}</span
+    >
+  </p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="true">OK</button>
+</div>
